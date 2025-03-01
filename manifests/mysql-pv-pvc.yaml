@@ -27,6 +27,3 @@ spec:
     requests:   
       storage:  5Gi  
   volumeName: mysql-pv-meitaltal
-  selector:   
-    matchLabels:   
-      app: mysql
