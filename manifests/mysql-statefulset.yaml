@@ -21,8 +21,6 @@ spec:
       containers:
       - name: database
         image: 992382545251.dkr.ecr.us-east-1.amazonaws.com/meitaltal/k8s-workshop:mysql-8.0.27
-        args:
-          - "--ignore-db-dir=lost+found"
         envFrom:
           - secretRef:
               name: mysql-secret
