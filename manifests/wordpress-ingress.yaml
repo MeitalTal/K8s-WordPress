@@ -7,9 +7,9 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
-  ingressClassName: nginx
+  ingressClassName: meitaltal-nginx
   rules:
-  - host: wordpress.local
+  - host: meitaltal-wordpress.local
     http:
       paths:
       - path: /
