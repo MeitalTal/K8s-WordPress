@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql
+  namespace: meitaltal
+  labels:
+    app: mysql
+spec:
+  replicas: 2
+  serviceName: mysql-service
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      imagePullSecrets:
+        - name: ecr-secret
+      containers:
+      - name: database
+        image: 992382545251.dkr.ecr.us-east-1.amazonaws.com/meitaltal/k8s-workshop:mysql-8.0.27
+        envFrom:
+          - secretRef:
+              name: mysql-secret
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+        - name: db-data
+          mountPath: /var/lib/mysql
+      volumes:
+        - name: db-data
+          persistentVolumeClaim:
+            claimName: mysql-pvc
