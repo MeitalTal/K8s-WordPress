@@ -9,7 +9,7 @@ metadata:
 spec:
   ingressClassName: meitaltal-nginx
   rules:
-  - host: meitaltal-wordpress.local
+  - host: a1403063d98e7458b9ade79316d0af4a-1772039166.us-east-1.elb.amazonaws.com
     http:
       paths:
       - path: /
