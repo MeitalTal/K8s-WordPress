@@ -1,19 +1,15 @@
-apiVersion: v1 
-kind: PersistentVolume  
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
 metadata:
-  name: mysql-pv-meitaltal
-  namespace: meitaltal 
-spec:  
-  capacity:   
-    storage: 5Gi  
-  accessModes:   
-    - ReadWriteOnce   
-  persistentVolumeReclaimPolicy: Retain
-  hostPath:   
-    path: /home/ec2-user/data/mysql  
-  claimRef:
-    namespace: meitaltal
-    name: mysql-pvc
+  name: meital-mysql-storage
+provisioner: ebs.csi.aws.com
+parameters:
+  type: gp3
+  fsType: ext4
+  encrypted: "true"
+volumeBindingMode: WaitForFirstConsumer
+
 ---  
 apiVersion: v1  
 kind: PersistentVolumeClaim
@@ -25,5 +21,6 @@ spec:
     - ReadWriteOnce  
   resources:   
     requests:   
-      storage:  5Gi  
-  volumeName: mysql-pv-meitaltal
+      storage:  5Gi 
+  storageClassName: meital-mysql-storage
+
