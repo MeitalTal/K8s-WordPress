@@ -10,7 +10,7 @@ spec:
     - ReadWriteOnce   
   persistentVolumeReclaimPolicy: Retain
   hostPath:   
-    path: /mnt/data/mysql  
+    path: /home/ec2-user/data/mysql  
   claimRef:
     namespace: meitaltal
     name: mysql-pvc
