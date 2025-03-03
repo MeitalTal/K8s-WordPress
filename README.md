@@ -101,7 +101,7 @@ Once logged in, on the left-hand menu, click on the "+" icon to expand more opti
 
 3. Import the file: "Kubernetes _ Compute Resources _ Namespace (Pods).json"
 
-![Grafana-Demo](assets/Grafana-demo.png)
+![Grafana-Demo](assets/Grafana-Demo.png)
 
 
 # ⚙️ Configuration 
