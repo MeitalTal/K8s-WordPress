@@ -37,7 +37,7 @@ Verify the deployment:
 ```sh
   kubectl get ingress -n meitaltal
 ```
-** Make sure the host matches your domain or public IP. ** 
+**Make sure the host matches your domain or public IP.** 
 
 # ⚙️ Configuration 
 Modify values.yaml to customize your deployment.
