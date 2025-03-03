@@ -5,7 +5,7 @@ metadata:
   name: wordpress-service  
   namespace: meitaltal
 spec:  
-  type: ClusterIP 
+  type: LoadBalancer 
   ports:  
   - name: http
     port: 80

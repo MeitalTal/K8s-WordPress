@@ -3,17 +3,10 @@ kind: Ingress
 metadata:
   name: wordpress-ingress
   namespace: meitaltal
-  annotations:
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
-    nginx.ingress.kubernetes.io/use-regex: "true"
-    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
-    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
-    nginx.ingress.kubernetes.io/enable-webhook-validation: "false"
-
 spec:
   ingressClassName: meitaltal
   rules:
-  - host: a8343f1c6552d4e7ea28b690b46b3f49-208218308.us-east-1.elb.amazonaws.com
+  - host: acf3314c8225e48fdbc4f011f68a257b-1202305726.us-east-1.elb.amazonaws.com
     http:
       paths:
       - path: /(grafana|login)(/|$)(.*)
