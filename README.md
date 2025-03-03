@@ -41,7 +41,7 @@ Verify the deployment:
 
 # ⚙️ Configuration 
 Modify values.yaml to customize your deployment.
-
+If you change the namespace in `values.yaml`, make sure to update the namespace in all commands in this guide. 
 # Uninstall 
 ```sh
   helm uninstall wordpress-elb -n meitaltal
