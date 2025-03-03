@@ -8,7 +8,7 @@ There are two variations of the deployment:
 ## 📂 Repository Structure
 
 
-## 🚀 Deployment Instructions
+## Deployment Instructions
 
 ### Prerequisites
 - Kubernetes cluster (EKS, Minikube, or other)
