@@ -7,7 +7,7 @@ There are two variations of the deployment:
 
 ## Deployment Instructions
 
-# Clone 
+### Clone 
 ```sh
   git clone https://github.com/MeitalTal/K8s-WordPress.git
   cd K8s-WordPress
