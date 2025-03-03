@@ -7,15 +7,15 @@ There are two variations of the deployment:
 
 ## Deployment Instructions
 
-### Clone 
+### Clone the Repository
 ```sh
   git clone https://github.com/MeitalTal/K8s-WordPress.git
   cd K8s-WordPress
 ```
 
 ### Prerequisites
-- Kubernetes cluster (EKS, Minikube, or other)
-- AWS configure
+- Kubernetes EKS cluster
+- AWS CLI configured
 - Helm installed (`v3.x`)
 ```sh
   curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 > get_helm.sh
@@ -34,6 +34,8 @@ There are two variations of the deployment:
   --docker-password=$(aws ecr get-login-password --region us-east-1) \
   --namespace meitaltal
 ```
+
+---
 
 ### Deploying with ELB
 This deployment creates an Elastic Load Balancer (ELB) to expose WordPress.
@@ -58,7 +60,8 @@ Verify the deployment:
 **Make sure the host matches your domain or public IP.** 
 
 ### Deploying without helm 
-Install NGINX Ingress Controller:
+
+Install NGINX Ingress Controller: (Optional)
 ```sh
   helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
   helm repo update
@@ -72,8 +75,8 @@ Apply the yaml files:
   kubectl apply -f manifests/mysql-service.yaml 
   kubectl apply -f manifests/wordpress-deployment.yaml
   kubectl apply -f manifests/wordpress-pv-pvc.yaml
-  kubectl apply -f manifests/wordpress-ingress.yaml
-  kubectl apply -f manifests/wordpress-service.yaml
+  kubectl apply -f manifests/wordpress-ingress.yaml        # if you're using ingress
+  kubectl apply -f manifests/wordpress-service.yaml        # if you're using ELB, change type to ClusterIp
 ```
 Install kube-prom-stack:
 ```sh
@@ -89,20 +92,24 @@ Install kube-prom-stack:
 1. Log in to Grafana
 Open a web browser and access the Grafana instance using the appropriate URL (LoadBalancer/Ingress URL).
 
-The default login credentials are:
+**Default Login Credentials:**
 Username: admin
 Password: prom-operator
 
 2. Navigate to the Dashboards Section
 Once logged in, on the left-hand menu, click on the "+" icon to expand more options and then click on "Import".
 
-3. Import the Dashboard - the file is "Kubernetes _ Compute Resources _ Namespace (Pods).json"
+3. Import the file: "Kubernetes _ Compute Resources _ Namespace (Pods).json"
+
+![Grafana-Demo](assets/Grafana-demo.png)
 
 
 # ⚙️ Configuration 
-Modify values.yaml to customize your deployment.
-If you change the namespace in `values.yaml`, make sure to update the namespace in all commands in this guide. 
+- Modify values.yaml to customize your deployment.
+- If you change the namespace in `values.yaml`, make sure to update the namespace in all commands in this guide. 
+
 # Uninstall 
+To uninstall the deployments, run:
 ```sh
   helm uninstall wordpress-elb -n meitaltal
   helm uninstall wordpress-ingress -n meitaltal
@@ -118,13 +125,28 @@ If the pod is not running, check logs:
 ```sh
 kubectl logs <prometheus-pod-name> -n meitaltal
 ```
-Edit the DaemonSet (if needed):
+Edit the DaemonSet (if necessary):
 If there is a port conflict, update the kube-prometheus-stack DaemonSet:
 ```sh
 kubectl edit daemonset.apps/meitaltal-kube-prom-stack-prometheus-node-exporter
 ```
-Find and modify 9100 port and save and exit the editor.
+Find and modify 9100 port, save and exit the editor.
 Restart Prometheus Components:
 ```sh
 kubectl rollout restart daemonset meitaltal-kube-prom-stack-prometheus-node-exporter -n meitaltal
 ```
+2. Error Accessing Grafana UI
+If you're facing issues accessing Grafana, update the ConfigMap:
+ ```sh
+kubectl edit cm meitaltal-kube-prom-stack-grafana
+```
+Under [Server], add the following:
+ ```sh
+serve_from_sub_path = true
+root_url = %(protocol)s://%(domain)s/grafana/
+```
+Finally, restart the Grafana deployment:
+ ```sh
+kubectl rollout restart deployment meitaltal-kube-prom-stack-grafana 
+```
+
