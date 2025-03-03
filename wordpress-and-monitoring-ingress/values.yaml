@@ -20,3 +20,9 @@ ingress-nginx:
 
 kube-prometheus-stack:
   fullnameOverride: "meitaltal-kube-prom-stack"
+
+grafana:
+  grafana.ini:
+    server:
+      root_url: "http://acf3314c8225e48fdbc4f011f68a257b-1202305726.us-east-1.elb.amazonaws.com/grafana"
+      serve_from_sub_path: true

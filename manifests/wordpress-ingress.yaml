@@ -3,6 +3,11 @@ kind: Ingress
 metadata:
   name: wordpress-ingress
   namespace: meitaltal
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
 spec:
   ingressClassName: meitaltal
   rules:
@@ -13,7 +18,7 @@ spec:
         pathType: ImplementationSpecific
         backend:
           service:
-            name: meitaltal-kube-prom-stack-grafana
+            name: meital-kube-prom-stack-grafana
             port:
               number: 80
       - path: /
