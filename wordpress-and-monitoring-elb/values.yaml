@@ -11,3 +11,7 @@ wordpress:
 
 mysql:
   image: "992382545251.dkr.ecr.us-east-1.amazonaws.com/meitaltal/k8s-workshop:mysql-8.0.27"
+
+kube-prometheus-stack:
+  fullnameOverride: "meitaltal-kube-prom-stack"
+
