@@ -2,9 +2,9 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: wordpress-ingress
-  namespace: meitaltal
+  namespace: {{ .Values.namespace }}
 spec:
-  ingressClassName: meitaltal
+  ingressClassName: {{ .Values.wordpress.ingress.ingressClassName }}
   rules:
   - host: a8343f1c6552d4e7ea28b690b46b3f49-208218308.us-east-1.elb.amazonaws.com
     http:
@@ -20,7 +20,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: meitaltal-kube-prom-stack-grafana
+            name: kube-prom-stack-grafana
             port:
               number: 80
-

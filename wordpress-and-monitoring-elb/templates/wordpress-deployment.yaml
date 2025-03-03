@@ -1,0 +1,43 @@
+---
+apiVersion: apps/v1  
+kind: Deployment  
+metadata:  
+  name: wordpress  
+  namespace: meitaltal
+spec:  
+  replicas: {{ .Values.wordpress.replicaCount }}    
+  selector:  
+    matchLabels:  
+      app: wordpress  
+  template:  
+    metadata:  
+      labels:  
+        app: wordpress  
+    spec: 
+      imagePullSecrets:
+        - name: ecr-secret 
+      containers:  
+      - name: wordpress  
+        image: {{ .Values.wordpress.image }}
+        ports:  
+        - containerPort: 80  
+          name: wordpress  
+        volumeMounts:  
+        - name: wp-data  
+          mountPath: /var/www/html  
+        env:  
+        - name: WORDPRESS_DB_HOST  
+          value: mysql-service.{{ .Values.namespace }}.svc.cluster.local  
+        - name: WORDPRESS_DB_PASSWORD  
+          valueFrom:  
+            secretKeyRef:  
+              name: mysql-secret  
+              key: MYSQL_ROOT_PASSWORD  
+        - name: WORDPRESS_DB_USER  
+          value: root  
+        - name: WORDPRESS_DB_NAME  
+          value: mysql  
+      volumes:  
+      - name: wp-data  
+        persistentVolumeClaim:  
+          claimName: wordpress-pvc  
