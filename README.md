@@ -39,15 +39,15 @@ Verify the deployment:
 ```
 ** Make sure the host matches your domain or public IP. ** 
 
-### ⚙️ Configuration 
+# ⚙️ Configuration 
 Modify values.yaml to customize your deployment.
 
-### Uninstall 
+# Uninstall 
 ```sh
   helm uninstall wordpress-elb -n meitaltal
   helm uninstall wordpress-ingress -n meitaltal
 ```
-### 🔧 Troubleshooting
+# 🔧 Troubleshooting
 1. Prometheus is configured to scrape metrics from Node Exporter on port 9100.
 If you encounter issues with Prometheus not collecting metrics, follow these steps:
 Check if Prometheus is running:
