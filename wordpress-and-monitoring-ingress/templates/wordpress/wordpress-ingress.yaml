@@ -9,17 +9,17 @@ spec:
   - host: a8343f1c6552d4e7ea28b690b46b3f49-208218308.us-east-1.elb.amazonaws.com
     http:
       paths:
+      - path: /(grafana|login)(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: meitaltal-kube-prom-stack-grafana
+            port:
+              number: 80
       - path: /
         pathType: Prefix
         backend:
           service:
             name: wordpress-service
-            port:
-              number: 80
-      - path: /grafana
-        pathType: Prefix
-        backend:
-          service:
-            name: kube-prom-stack-grafana
             port:
               number: 80
