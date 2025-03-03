@@ -68,7 +68,3 @@ Restart Prometheus Components:
 ```sh
 kubectl rollout restart daemonset meitaltal-kube-prom-stack-prometheus-node-exporter -n meitaltal
 ```
-<<<<<<< HEAD
-=======
-
->>>>>>> 2177381af5694e05fc157aef147f0b6ec816c383
