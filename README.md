@@ -1,19 +1,13 @@
 # K8s-WordPress
-This repository contains two Helm charts for deploying WordPress, MySQL, Prometheus, and NGINX Ingress.  
-There are two variations of the deployment:
+This repository contains a modular Helm chart (`wordpress-stack`) for deploying WordPress, MySQL, and monitoring tools (Prometheus & Grafana) on a Kubernetes cluster with flexible exposure options (Ingress or ELB).
 
-1. **`wordpress-and-monitoring-elb`** - Uses an AWS Elastic Load Balancer (ELB) for external access.
-2. **`wordpress-and-monitoring-ingress`** - Uses an NGINX Ingress Controller for routing traffic.
+## Features
+- Modular deployment: Enable or disable MySQL, WordPress, and monitoring components.
+- Flexible exposure: Choose between Ingress or ELB.
+- Persistent storage using AWS EBS.
+- Prometheus and Grafana for monitoring.
 
-## Deployment Instructions
-
-### Clone the Repository
-```sh
-  git clone https://github.com/MeitalTal/K8s-WordPress.git
-  cd K8s-WordPress
-```
-
-### Prerequisites
+## Prerequisites
 - Kubernetes EKS cluster
 - AWS CLI configured
 - Helm installed (`v3.x`)
@@ -26,7 +20,7 @@ There are two variations of the deployment:
 ```sh
   kubectl create namespace meitaltal
 ```
-- create your ECR secret:
+- ECR secret for pulling images:
 ```sh
   kubectl create secret docker-registry ecr-secret \
   --docker-server=992382545251.dkr.ecr.us-east-1.amazonaws.com \
@@ -35,32 +29,48 @@ There are two variations of the deployment:
   --namespace meitaltal
 ```
 
----
-
-### Deploying with ELB
-This deployment creates an Elastic Load Balancer (ELB) to expose WordPress.
+## Clone the Repository
 ```sh
-  helm install wordpress-elb ./wordpress-and-monitoring-elb -n meitaltal
+  git clone https://github.com/MeitalTal/K8s-WordPress.git
+  cd K8s-WordPress/wordpress-stack
 ```
-Verify the deployment:
-```sh
-  kubectl get svc -n meitaltal
-```
-Look for the EXTERNAL-IP of the LoadBalancer and use it to access WordPress/Grafana.
 
-### Deploying with Ingress
-This deployment creates an Elastic Load Balancer (ELB) to expose WordPress.
-```sh
-  helm install wordpress-ingress ./wordpress-and-monitoring-ingress -n meitaltal
-```
-Verify the deployment:
-```sh
-  kubectl get ingress -n meitaltal
-```
-**Make sure the host matches your domain or public IP.** 
+## Installation with Helm
 
-### Deploying without helm 
+1. Update Dependencies: The chart relies on external Helm charts (ingress-nginx and kube-prometheus-stack). Fetch them with:
+```sh
+  helm dependency update
+```
 
+2. Deploy the Chart:
+   - With Ingress:
+```sh
+  helm install wordpress-stack . -n meitaltal --set global.exposure=ingress
+```
+- This deploys WordPress and Grafana exposed via an NGINX Ingress Controller.
+
+- With ELB:
+```sh
+  helm install wordpress-stack . -n meitaltal --set global.exposure=elb
+```
+- This deploys WordPress and Grafana exposed via AWS LoadBalancers.
+
+3. Verify the Deployment:
+   - For Ingress:
+```sh
+     kubectl get ingress -n meitaltal
+```
+Look for the ADDRESS column to find the Ingress URL. Access WordPress and Grafana via the specified host (e.g., a8343f1c6552d4e7ea28b690b46b3f49-208218308.us-east-1.elb.amazonaws.com).
+
+
+- For ELB:
+```sh
+     kubectl get svc -n meitaltal
+```
+Look for the EXTERNAL-IP of the LoadBalancer services (wordpress-service and grafana-lb-service) to access them directly.
+
+
+### Manual Installation with YAML Files
 Install NGINX Ingress Controller: (Optional)
 ```sh
   helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
@@ -86,41 +96,58 @@ Install kube-prom-stack:
   kubectl apply -f manifests/kube-prom-stack-grafana.yaml # if you want to access grafana via ELB 
 ```
 
-**Make sure the host matches your domain or public IP.** 
+## Access
+- WordPress: Use the Ingress host or ELB EXTERNAL-IP.
+- Grafana:
+  - With Ingress: <Ingress-host>/grafana
+  - With ELB: Use the EXTERNAL-IP of grafana-lb-service on port 3000.
+  - Default Credentials: Username: admin, Password: prom-operator
 
-### Access WordPress:
-Open a web browser and access the Grafana instance using the appropriate URL (LoadBalancer/Ingress URL).
+## Grafana Dashboards
+1. Log in to Grafana.
+2. Navigate to the "+" icon on the left-hand menu, then click "Import".
+3. Import the file: Kubernetes _ Compute Resources _ Namespace (Pods).json.
 
+## Demo
 ![WordPress-Demo](assets/WordPress-Demo.png)
-
-### Access Grafana:
-1. Log in to Grafana
-Open a web browser and access the Grafana instance using the appropriate URL (LoadBalancer/Ingress URL)
-
-URL/grafana
-
-**Default Login Credentials:**
-Username: admin
-Password: prom-operator
-
-2. Navigate to the Dashboards Section
-Once logged in, on the left-hand menu, click on the "+" icon to expand more options and then click on "Import".
-
-3. Import the file: "Kubernetes _ Compute Resources _ Namespace (Pods).json"
-
 ![Grafana-Demo](assets/Grafana-Demo.png)
 
 
 # ⚙️ Configuration 
-- Modify values.yaml to customize your deployment.
-- If you change the namespace in `values.yaml`, make sure to update the namespace in all commands in this guide. 
+Customize the deployment by editing values.yaml or using --set flags:
+- Enable/disable components:
+```sh
+  helm install wordpress-stack . -n meitaltal --set mysql.enabled=false --set global.exposure=elb
+```
+- Adjust Replica Count for WordPress:
+```sh
+  helm install wordpress-stack . -n meitaltal --set wordpress.replicaCount=3
+```
+- Customize Storage Class
+  Use a different storage class (e.g., for a custom EBS setup):
+```sh
+  helm install wordpress-stack . -n meitaltal --set global.storageClassName=meitaltal-ebs
+```
+- Change namespace, storage class, or other settings in values.yaml.
+
+- Example Full Configuration:
+```sh
+  helm install wordpress-stack . -n meitaltal \
+  --set global.exposure=elb \
+  --set mysql.enabled=true \
+  --set wordpress.enabled=true \
+  --set wordpress.replicaCount=2 \
+  --set monitoring.enabled=true \
+  --set global.storageClassName=ebs-custom \
+  --set wordpress.storageSize=5Gi
+```
 
 # Uninstall 
-To uninstall the deployments, run:
+To remove the deployment:
 ```sh
-  helm uninstall wordpress-elb -n meitaltal
-  helm uninstall wordpress-ingress -n meitaltal
+  helm uninstall wordpress-stack -n meitaltal
 ```
+
 # 🔧 Troubleshooting
 1. Prometheus is configured to scrape metrics from Node Exporter on port 9100.
 If you encounter issues with Prometheus not collecting metrics, follow these steps:
@@ -142,8 +169,7 @@ Restart Prometheus Components:
 ```sh
 kubectl rollout restart daemonset meitaltal-kube-prom-stack-prometheus-node-exporter -n meitaltal
 ```
-2. Error Accessing Grafana UI
-If you're facing issues accessing Grafana, update the ConfigMap:
+2. Grafana Access Issues: Update the ConfigMap if the UI isn't accessible:
  ```sh
 kubectl edit cm meitaltal-kube-prom-stack-grafana
 ```
@@ -152,7 +178,7 @@ Under [Server], add the following:
 serve_from_sub_path = true
 root_url = %(protocol)s://%(domain)s/grafana/
 ```
-Finally, restart the Grafana deployment:
+Restart Grafana:
  ```sh
 kubectl rollout restart deployment meitaltal-kube-prom-stack-grafana 
 ```

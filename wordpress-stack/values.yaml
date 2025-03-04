@@ -1,15 +1,19 @@
+# Default namespace for all resources deployed by this chart
 namespace: meitaltal
 
+# Global settings affecting all components
 global:
   exposure: "ingress"  
   storageClassName: "ebs-sc-nitzanim"  
   ingressClassName: "meitaltal"  
 
+# MySQL database configuration
 mysql:
   enabled: true
   image: "992382545251.dkr.ecr.us-east-1.amazonaws.com/meitaltal/k8s-workshop:mysql-8.0.27"
   storageSize: "5Gi"
 
+# WordPress application configuration
 wordpress:
   enabled: true
   replicaCount: 2
@@ -18,6 +22,7 @@ wordpress:
   ingress:
     host: "a8343f1c6552d4e7ea28b690b46b3f49-208218308.us-east-1.elb.amazonaws.com"
 
+# Prometheus & Grafana configuration
 monitoring:
   enabled: true
   prometheus:
@@ -28,6 +33,7 @@ monitoring:
         root_url: "http://acf3314c8225e48fdbc4f011f68a257b-1202305726.us-east-1.elb.amazonaws.com/grafana"
         serve_from_sub_path: true
 
+# Settings for the NGINX Ingress Controller (used when global.exposure is "ingress")
 ingress-nginx:
   controller:
     ingressClassResource:
