@@ -44,13 +44,13 @@ This repository contains a modular Helm chart (`wordpress-stack`) for deploying 
 
 
 2. Deploy the Chart:
-- With Ingress:
+- **With Ingress:**
 ```sh
   helm install wordpress-stack . -n meitaltal --set global.exposure=ingress
 ```
 This deploys WordPress and Grafana exposed via an NGINX Ingress Controller.
 
-- With ELB:
+- **With ELB:**
 ```sh
   helm install wordpress-stack . -n meitaltal --set global.exposure=elb
 ```
@@ -59,14 +59,14 @@ This deploys WordPress and Grafana exposed via AWS LoadBalancers.
 
 
 3. Verify the Deployment:
-- For Ingress:
+- **For Ingress:**
 ```sh
      kubectl get ingress -n meitaltal
 ```
 Look for the ADDRESS column to find the Ingress URL. Access WordPress and Grafana via the specified host (e.g., a8343f1c6552d4e7ea28b690b46b3f49-208218308.us-east-1.elb.amazonaws.com).
 
 
-- For ELB:
+- **For ELB:**
 ```sh
      kubectl get svc -n meitaltal
 ```
