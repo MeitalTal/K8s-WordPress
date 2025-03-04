@@ -1,0 +1,18 @@
+{{- if .Values.wordpress.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: wordpress-service
+  namespace: {{ .Values.namespace }}
+spec:
+  type: {{ ternary "ClusterIP" "LoadBalancer" (eq .Values.global.exposure "ingress") }}
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+  - name: https
+    port: 443
+    targetPort: 443
+  selector:
+    app: wordpress
+{{- end }}

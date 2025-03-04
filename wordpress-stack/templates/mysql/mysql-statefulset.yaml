@@ -1,3 +1,4 @@
+{{- if .Values.mysql.enabled }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -33,3 +34,4 @@ spec:
         - name: db-data
           persistentVolumeClaim:
             claimName: mysql-pvc
+{{- end }}

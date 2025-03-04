@@ -1,9 +1,9 @@
----
+{{- if .Values.wordpress.enabled }}
 apiVersion: apps/v1  
 kind: Deployment  
 metadata:  
   name: wordpress  
-  namespace: meitaltal
+  namespace: {{ .Values.namespace }}
 spec:  
   replicas: {{ .Values.wordpress.replicaCount }}    
   selector:  
@@ -41,3 +41,4 @@ spec:
       - name: wp-data  
         persistentVolumeClaim:  
           claimName: wordpress-pvc  
+{{- end }}

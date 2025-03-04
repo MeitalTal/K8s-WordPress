@@ -1,0 +1,34 @@
+namespace: meitaltal
+
+global:
+  exposure: "ingress"  
+  storageClassName: "ebs-sc-nitzanim"  
+  ingressClassName: "meitaltal"  
+
+mysql:
+  enabled: true
+  image: "992382545251.dkr.ecr.us-east-1.amazonaws.com/meitaltal/k8s-workshop:mysql-8.0.27"
+  storageSize: "5Gi"
+
+wordpress:
+  enabled: true
+  replicaCount: 2
+  image: "992382545251.dkr.ecr.us-east-1.amazonaws.com/meitaltal/k8s-workshop:wordpress-latest"
+  storageSize: "1Gi"
+  ingress:
+    host: "a8343f1c6552d4e7ea28b690b46b3f49-208218308.us-east-1.elb.amazonaws.com"
+
+monitoring:
+  enabled: true
+  prometheus:
+    fullnameOverride: "kube-prom-stack"
+  grafana:
+    grafana.ini:
+      server:
+        root_url: "http://acf3314c8225e48fdbc4f011f68a257b-1202305726.us-east-1.elb.amazonaws.com/grafana"
+        serve_from_sub_path: true
+
+ingress-nginx:
+  controller:
+    ingressClassResource:
+      name: "meitaltal"

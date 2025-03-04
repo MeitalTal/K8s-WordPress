@@ -1,3 +1,4 @@
+{{- if and .Values.wordpress.enabled (eq .Values.global.exposure "ingress") }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -9,16 +10,16 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
 spec:
-  ingressClassName: {{ .Values.wordpress.ingress.ingressClassName }}
+  ingressClassName: {{ .Values.global.ingressClassName }}
   rules:
-  - host: a8343f1c6552d4e7ea28b690b46b3f49-208218308.us-east-1.elb.amazonaws.com
+  - host: {{ .Values.wordpress.ingress.host }}
     http:
       paths:
       - path: /(grafana|login)(/|$)(.*)
         pathType: ImplementationSpecific
         backend:
           service:
-            name: meitaltal-kube-prom-stack-grafana
+            name: {{ .Values.monitoring.prometheus.fullnameOverride }}-grafana
             port:
               number: 80
       - path: /
@@ -28,3 +29,4 @@ spec:
             name: wordpress-service
             port:
               number: 80
+{{- end }}
