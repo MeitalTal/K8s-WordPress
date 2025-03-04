@@ -41,7 +41,7 @@ This repository contains a modular Helm chart (`wordpress-stack`) for deploying 
 ```sh
   helm dependency update
 ```
----
+
 
 2. Deploy the Chart:
 - With Ingress:
@@ -56,7 +56,7 @@ This deploys WordPress and Grafana exposed via an NGINX Ingress Controller.
 ```
 This deploys WordPress and Grafana exposed via AWS LoadBalancers.
 
----
+
 
 3. Verify the Deployment:
 - For Ingress:
