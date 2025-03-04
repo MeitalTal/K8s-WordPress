@@ -96,6 +96,7 @@ Open a web browser and access the Grafana instance using the appropriate URL (Lo
 ### Access Grafana:
 1. Log in to Grafana
 Open a web browser and access the Grafana instance using the appropriate URL (LoadBalancer/Ingress URL)
+
 URL/grafana
 
 **Default Login Credentials:**
