@@ -88,9 +88,14 @@ Install kube-prom-stack:
 
 **Make sure the host matches your domain or public IP.** 
 
+### Access WordPress:
+Open a web browser and access the Grafana instance using the appropriate URL (LoadBalancer/Ingress URL).
+![WordPress-Demo](assets/WordPress-Demo.png)
+
 ### Access Grafana:
 1. Log in to Grafana
-Open a web browser and access the Grafana instance using the appropriate URL (LoadBalancer/Ingress URL).
+Open a web browser and access the Grafana instance using the appropriate URL (LoadBalancer/Ingress URL)
+URL/grafana
 
 **Default Login Credentials:**
 Username: admin
