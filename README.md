@@ -79,21 +79,22 @@ Install NGINX Ingress Controller: (Optional)
 ```
 Apply the yaml files:
 ```sh
-  kubectl apply -f manifests/mysql-secret.yaml
-  kubectl apply -f manifests/mysql-statefulset.yaml
-  kubectl apply -f manifests/mysql-pv-pvc.yaml
-  kubectl apply -f manifests/mysql-service.yaml 
-  kubectl apply -f manifests/wordpress-deployment.yaml
-  kubectl apply -f manifests/wordpress-pv-pvc.yaml
-  kubectl apply -f manifests/wordpress-ingress.yaml        # if you're using ingress
-  kubectl apply -f manifests/wordpress-service.yaml        # if you're using ELB, change type to ClusterIp
+  cd ..
+  kubectl apply -f manifests/mysql/mysql-secret.yaml
+  kubectl apply -f manifests/mysql/mysql-statefulset.yaml
+  kubectl apply -f manifests/mysql/mysql-pv-pvc.yaml
+  kubectl apply -f manifests/mysql/mysql-service.yaml 
+  kubectl apply -f manifests/wordpress/wordpress-deployment.yaml
+  kubectl apply -f manifests/wordpress/wordpress-pv-pvc.yaml
+  kubectl apply -f manifests/wordpress/wordpress-ingress.yaml        # if you're using ingress
+  kubectl apply -f manifests/wordpress/wordpress-service.yaml        # if you're using ELB, change type to ClusterIp
 ```
 Install kube-prom-stack:
 ```sh
   helm repo add prometheus-community https://prometheus-community.github.io/helm-charts 
   helm repo update
   helm install meitaltal-kube-prom-stack prometheus-community/kube-prometheus-stack --namespace meitaltal 
-  kubectl apply -f manifests/kube-prom-stack-grafana.yaml # if you want to access grafana via ELB 
+  kubectl apply -f manifests/prometheus/kube-prom-stack-grafana.yaml # if you want to access grafana via ELB 
 ```
 
 ## Access
