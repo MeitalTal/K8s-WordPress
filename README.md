@@ -47,13 +47,13 @@ This repository contains a modular Helm chart (`wordpress-stack`) for deploying 
 ```sh
   helm install wordpress-stack . -n meitaltal --set global.exposure=ingress
 ```
-- This deploys WordPress and Grafana exposed via an NGINX Ingress Controller.
+   - This deploys WordPress and Grafana exposed via an NGINX Ingress Controller.
 
-- With ELB:
+  - With ELB:
 ```sh
   helm install wordpress-stack . -n meitaltal --set global.exposure=elb
 ```
-- This deploys WordPress and Grafana exposed via AWS LoadBalancers.
+  - This deploys WordPress and Grafana exposed via AWS LoadBalancers.
 
 3. Verify the Deployment:
    - For Ingress:
@@ -70,7 +70,7 @@ Look for the ADDRESS column to find the Ingress URL. Access WordPress and Grafan
 Look for the EXTERNAL-IP of the LoadBalancer services (wordpress-service and grafana-lb-service) to access them directly.
 
 
-### Manual Installation with YAML Files
+## Manual Installation with YAML Files
 Install NGINX Ingress Controller: (Optional)
 ```sh
   helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
@@ -109,7 +109,9 @@ Install kube-prom-stack:
 3. Import the file: Kubernetes _ Compute Resources _ Namespace (Pods).json.
 
 ## Demo
+### Wordpress Demo
 ![WordPress-Demo](assets/WordPress-Demo.png)
+### Grafana Demo
 ![Grafana-Demo](assets/Grafana-Demo.png)
 
 
