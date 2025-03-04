@@ -22,6 +22,5 @@ spec:
   resources:  
     requests:  
       storage: 1Gi  
-  storageClassName: manual
   storageClassName: meital-wordpress-storage
 
