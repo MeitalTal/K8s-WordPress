@@ -46,13 +46,21 @@ This repository contains a modular Helm chart (`wordpress-stack`) for deploying 
 2. Deploy the Chart:
 - **With Ingress:**
 ```sh
-  helm install wordpress-stack . -n meitaltal --set global.exposure=ingress
+  helm install wordpress-stack . -n meitaltal \
+  --set global.exposure=ingress \
+  --set mysql.enabled=true \
+  --set wordpress.enabled=true \
+  --set monitoring.enabled=true \
 ```
 This deploys WordPress and Grafana exposed via an NGINX Ingress Controller.
 
 - **With ELB:**
 ```sh
-  helm install wordpress-stack . -n meitaltal --set global.exposure=elb
+  helm install wordpress-stack . -n meitaltal \
+  --set global.exposure=elb \
+  --set mysql.enabled=true \
+  --set wordpress.enabled=true \
+  --set monitoring.enabled=true \
 ```
 This deploys WordPress and Grafana exposed via AWS LoadBalancers.
 
