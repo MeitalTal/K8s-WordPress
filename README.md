@@ -107,7 +107,7 @@ Install kube-prom-stack:
 ## Grafana Dashboards
 1. Log in to Grafana.
 2. Navigate to the "+" icon on the left-hand menu, then click "Import".
-3. Import the file: Kubernetes _ Compute Resources _ Namespace (Pods).json.
+3. Import the file: K8s_ComputeResources_NamespacePodMonitoring.json.
 
 ## Demo
 ### Wordpress Demo
